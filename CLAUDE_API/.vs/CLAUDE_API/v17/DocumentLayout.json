@@ -1,0 +1,332 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\ANTHROPIC\\CLAUDE_API\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|d:\\anthropic\\claude_api\\views\\chat\\prefill.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:views\\chat\\prefill.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|d:\\anthropic\\claude_api\\views\\chat\\basic.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:views\\chat\\basic.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|d:\\anthropic\\claude_api\\views\\chat\\_chatnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:views\\chat\\_chatnav.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|d:\\anthropic\\claude_api\\model\\toolsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:model\\toolsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|d:\\anthropic\\claude_api\\model\\staticchatdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:model\\staticchatdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|d:\\anthropic\\claude_api\\model\\requesthelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:model\\requesthelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|d:\\anthropic\\claude_api\\model\\featuresservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:model\\featuresservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|D:\\ANTHROPIC\\CLAUDE_API\\model\\evalservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:model\\evalservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|d:\\anthropic\\claude_api\\model\\evalmodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:model\\evalmodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|D:\\ANTHROPIC\\CLAUDE_API\\model\\claudeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:model\\claudeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|D:\\ANTHROPIC\\CLAUDE_API\\model\\chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:model\\chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|d:\\anthropic\\claude_api\\model\\chathelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:model\\chathelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|d:\\anthropic\\claude_api\\controllers\\toolscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:controllers\\toolscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|d:\\anthropic\\claude_api\\controllers\\featurescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:controllers\\featurescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|D:\\ANTHROPIC\\CLAUDE_API\\controllers\\evalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:controllers\\evalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|D:\\ANTHROPIC\\CLAUDE_API\\controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:controllers\\chatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|D:\\ANTHROPIC\\CLAUDE_API\\views\\chat\\_chatscript.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:views\\chat\\_chatscript.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|D:\\ANTHROPIC\\CLAUDE_API\\app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD220BF5-1545-4F7F-8EB9-AC7FE03646C0}|CLAUDE_API.csproj|solutionrelative:app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Prefill.cshtml",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Views\\Chat\\Prefill.cshtml",
+              "RelativeDocumentMoniker": "Views\\Chat\\Prefill.cshtml",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Views\\Chat\\Prefill.cshtml",
+              "RelativeToolTip": "Views\\Chat\\Prefill.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-11T09:57:12.95Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "_ChatNav.cshtml",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Views\\Chat\\_ChatNav.cshtml",
+              "RelativeDocumentMoniker": "Views\\Chat\\_ChatNav.cshtml",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Views\\Chat\\_ChatNav.cshtml",
+              "RelativeToolTip": "Views\\Chat\\_ChatNav.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-11T09:57:06.22Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ToolsService.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\ToolsService.cs",
+              "RelativeDocumentMoniker": "Model\\ToolsService.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\ToolsService.cs",
+              "RelativeToolTip": "Model\\ToolsService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-11T09:57:02.762Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "StaticChatData.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\StaticChatData.cs",
+              "RelativeDocumentMoniker": "Model\\StaticChatData.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\StaticChatData.cs",
+              "RelativeToolTip": "Model\\StaticChatData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-11T09:56:49.566Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "RequestHelper.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\RequestHelper.cs",
+              "RelativeDocumentMoniker": "Model\\RequestHelper.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\RequestHelper.cs",
+              "RelativeToolTip": "Model\\RequestHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-11T09:56:47.004Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "FeaturesService.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\FeaturesService.cs",
+              "RelativeDocumentMoniker": "Model\\FeaturesService.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\FeaturesService.cs",
+              "RelativeToolTip": "Model\\FeaturesService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-11T09:56:42.373Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "EvalModels.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\EvalModels.cs",
+              "RelativeDocumentMoniker": "Model\\EvalModels.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\EvalModels.cs",
+              "RelativeToolTip": "Model\\EvalModels.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-11T09:56:30.437Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ChatHelpers.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\ChatHelpers.cs",
+              "RelativeDocumentMoniker": "Model\\ChatHelpers.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\ChatHelpers.cs",
+              "RelativeToolTip": "Model\\ChatHelpers.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAcPQQAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-11T09:56:12.257Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ToolsController.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Controllers\\ToolsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ToolsController.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Controllers\\ToolsController.cs",
+              "RelativeToolTip": "Controllers\\ToolsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-11T09:56:10.363Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "FeaturesController.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Controllers\\FeaturesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\FeaturesController.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Controllers\\FeaturesController.cs",
+              "RelativeToolTip": "Controllers\\FeaturesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-11T09:56:08.486Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Basic.cshtml",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Views\\Chat\\Basic.cshtml",
+              "RelativeDocumentMoniker": "Views\\Chat\\Basic.cshtml",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Views\\Chat\\Basic.cshtml",
+              "RelativeToolTip": "Views\\Chat\\Basic.cshtml",
+              "ViewState": "AgIAAGsAAAAAAAAAAAAAAGsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-10T12:19:08.225Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "RouteConfig.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\App_Start\\RouteConfig.cs",
+              "RelativeDocumentMoniker": "App_Start\\RouteConfig.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\App_Start\\RouteConfig.cs",
+              "RelativeToolTip": "App_Start\\RouteConfig.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAADwvxYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-10T12:18:14.014Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "EvalServices.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\EvalServices.cs",
+              "RelativeDocumentMoniker": "Model\\EvalServices.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\EvalServices.cs",
+              "RelativeToolTip": "Model\\EvalServices.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-10T11:56:53.356Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "EvalController.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Controllers\\EvalController.cs",
+              "RelativeDocumentMoniker": "Controllers\\EvalController.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Controllers\\EvalController.cs",
+              "RelativeToolTip": "Controllers\\EvalController.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAUwDcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-10T11:56:38.718Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ChatMessage.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\ChatMessage.cs",
+              "RelativeDocumentMoniker": "Model\\ChatMessage.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\ChatMessage.cs",
+              "RelativeToolTip": "Model\\ChatMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAgwBIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-10T11:56:24.016Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ClaudeService.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\ClaudeService.cs",
+              "RelativeDocumentMoniker": "Model\\ClaudeService.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Model\\ClaudeService.cs",
+              "RelativeToolTip": "Model\\ClaudeService.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-10T11:56:07.667Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "_ChatScript.cshtml",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Views\\Chat\\_ChatScript.cshtml",
+              "RelativeDocumentMoniker": "Views\\Chat\\_ChatScript.cshtml",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Views\\Chat\\_ChatScript.cshtml",
+              "RelativeToolTip": "Views\\Chat\\_ChatScript.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-10T11:41:14.932Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ChatController.cs",
+              "DocumentMoniker": "D:\\ANTHROPIC\\CLAUDE_API\\Controllers\\ChatController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ChatController.cs",
+              "ToolTip": "D:\\ANTHROPIC\\CLAUDE_API\\Controllers\\ChatController.cs",
+              "RelativeToolTip": "Controllers\\ChatController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-10T11:32:40.026Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

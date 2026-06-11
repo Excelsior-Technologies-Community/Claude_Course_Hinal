@@ -1,0 +1,30 @@
+@{
+    ViewBag.Title = "Image Analysis";
+}
+
+<h2>Image Analysis Mock</h2>
+<div>
+    <label>Image Name:</label>
+    <input type="text" id="imgName" class="form-control" value="sample_diagram.png" />
+    <button id="sendBtn" class="btn btn-primary mt-2">Send Image</button>
+</div>
+<div class="mt-4">
+    <pre id="output" style="white-space: pre-wrap; font-family: monospace; background: #f4f4f4; padding: 10px; border-radius: 5px;"></pre>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#sendBtn').click(function () {
+                var name = $('#imgName').val();
+                $.post('@Url.Action("SendImage", "Features")', { imageName: name }, function (res) {
+                    if (res.success) {
+                        $('#output').text(res.text);
+                    } else {
+                        $('#output').text("Error: " + res.error);
+                    }
+                });
+            });
+        });
+    </script>
+}

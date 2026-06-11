@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - CLAUDE API</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+
+    <style>
+                * { box-sizing: border-box; }
+
+                body {
+                    font-family: 'Inter', 'Segoe UI', sans-serif;
+                    background: #f0f2f5;
+                    margin: 0;
+                    padding: 0;
+                    color: #1a1a2e;
+                }
+
+                /* ── Top navbar ── */
+                .top-navbar {
+                    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                    padding: 0 24px;
+                    height: 56px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+                    position: sticky;
+                    top: 0;
+                    z-index: 1000;
+                }
+
+                .top-navbar .brand {
+                    color: #fff;
+                    font-size: 18px;
+                    font-weight: 700;
+                    text-decoration: none;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .top-navbar .brand span.logo {
+                    background: linear-gradient(135deg, #e86a3a, #f59e0b);
+                    color: white;
+                    width: 32px; height: 32px;
+                    border-radius: 8px;
+                    display: flex; align-items: center; justify-content: center;
+                    font-size: 16px; font-weight: 800;
+                }
+
+                .top-navbar .brand span.name {
+                    letter-spacing: 0.5px;
+                }
+
+                .top-navbar .brand span.badge-api {
+                    background: rgba(232,106,58,0.25);
+                    color: #f59e0b;
+                    font-size: 10px;
+                    font-weight: 700;
+                    padding: 2px 7px;
+                    border-radius: 10px;
+                    border: 1px solid rgba(245,158,11,0.3);
+                    letter-spacing: 1px;
+                }
+
+                /* ── Side nav ── */
+                .app-shell {
+                    display: flex;
+                    min-height: calc(100vh - 56px);
+                }
+
+                .side-nav {
+                    width: 220px;
+                    background: #fff;
+                    border-right: 1px solid #e8ecf0;
+                    padding: 20px 0;
+                    flex-shrink: 0;
+                    box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+                }
+
+                .side-nav .nav-section {
+                    padding: 6px 16px 4px;
+                    font-size: 10px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 1.2px;
+                    color: #9ca3af;
+                    margin-top: 8px;
+                }
+
+                .side-nav a {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 9px 20px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    color: #4b5563;
+                    text-decoration: none;
+                    border-left: 3px solid transparent;
+                    transition: all 0.15s;
+                }
+
+                .side-nav a:hover {
+                    background: #f3f4f6;
+                    color: #1a1a2e;
+                    border-left-color: #d1d5db;
+                }
+
+                .side-nav a.active {
+                    background: #eff6ff;
+                    color: #2563eb;
+                    border-left-color: #2563eb;
+                    font-weight: 600;
+                }
+
+                .side-nav a .icon {
+                    width: 20px;
+                    text-align: center;
+                    font-size: 14px;
+                }
+
+                /* ── Main content ── */
+                .main-content {
+                    flex: 1;
+                    padding: 28px 32px;
+                    overflow-y: auto;
+                }
+
+                /* ── Page header ── */
+                .page-header-bar {
+                    margin-bottom: 24px;
+                }
+
+                .page-header-bar h2 {
+                    font-size: 22px;
+                    font-weight: 700;
+                    color: #1a1a2e;
+                    margin: 0 0 4px 0;
+                    border: none;
+                    padding: 0;
+                }
+
+                .page-header-bar p {
+                    color: #6b7280;
+                    font-size: 13px;
+                    margin: 0;
+                }
+
+                /* ── Chat area ── */
+                .chat-card {
+                    background: #fff;
+                    border-radius: 14px;
+                    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+                    overflow: hidden;
+                }
+
+                .chat-card-header {
+                    background: linear-gradient(135deg, #1a1a2e, #16213e);
+                    padding: 14px 20px;
+                    color: white;
+                    font-size: 13px;
+                    font-weight: 600;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+
+                .chat-card-header .dot {
+                    width: 8px; height: 8px;
+                    border-radius: 50%;
+                    background: #22c55e;
+                    box-shadow: 0 0 6px #22c55e;
+                }
+
+                .chat-box {
+                    height: 420px;
+                    overflow-y: auto;
+                    padding: 20px;
+                    background: #fafbfc;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 14px;
+                }
+
+                .chat-box::-webkit-scrollbar { width: 4px; }
+                .chat-box::-webkit-scrollbar-track { background: transparent; }
+                .chat-box::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+                .bubble-wrap { display: flex; flex-direction: column; }
+                .bubble-wrap.user      { align-items: flex-end; }
+                .bubble-wrap.assistant { align-items: flex-start; }
+
+                .lbl {
+                    font-size: 10px;
+                    font-weight: 700;
+                    margin-bottom: 4px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.8px;
+                    opacity: 0.55;
+                }
+
+                .message {
+                    max-width: 72%;
+                    padding: 11px 16px;
+                    border-radius: 18px;
+                    line-height: 1.6;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    font-size: 14px;
+                    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+                }
+
+                .message.user {
+                    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+                    color: #fff;
+                    border-bottom-right-radius: 4px;
+                }
+
+                .message.assistant {
+                    background: #fff;
+                    color: #1a1a2e;
+                    border: 1px solid #e8ecf0;
+                    border-bottom-left-radius: 4px;
+                }
+
+                .empty-msg {
+                    text-align: center;
+                    color: #9ca3af;
+                    margin: auto;
+                    font-size: 14px;
+                }
+
+                /* ── Input row ── */
+                .chat-input-row {
+                    padding: 16px 20px;
+                    background: #fff;
+                    border-top: 1px solid #f0f0f0;
+                    display: flex;
+                    gap: 10px;
+                    align-items: flex-end;
+                }
+
+                .chat-input-row textarea {
+                    flex: 1;
+                    padding: 10px 16px;
+                    border: 1.5px solid #e5e7eb;
+                    border-radius: 10px;
+                    font-size: 14px;
+                    resize: none;
+                    height: 46px;
+                    font-family: inherit;
+                    background: #f9fafb;
+                    transition: border-color 0.2s;
+                    line-height: 1.5;
+                }
+
+                .chat-input-row textarea:focus {
+                    outline: none;
+                    border-color: #2563eb;
+                    background: #fff;
+                }
+
+                .btn-send {
+                    padding: 0 22px;
+                    height: 46px;
+                    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+                    color: white;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 14px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    transition: all 0.2s;
+                    white-space: nowrap;
+                }
+
+                .btn-send:hover    { background: linear-gradient(135deg, #1d4ed8, #1e40af); transform: translateY(-1px); }
+                .btn-send:disabled { background: #9ca3af; cursor: not-allowed; transform: none; }
+
+                .btn-clear {
+                    padding: 7px 16px;
+                    background: transparent;
+                    color: #9ca3af;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 8px;
+                    font-size: 12px;
+                    cursor: pointer;
+                    margin-top: 10px;
+                    transition: all 0.15s;
+                }
+
+                .btn-clear:hover { color: #ef4444; border-color: #ef4444; }
+
+                /* ── Control bars ── */
+                .ctrl-bar {
+                    border-radius: 10px;
+                    padding: 12px 16px;
+                    margin-bottom: 12px;
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    gap: 12px;
+                }
+
+                .ctrl-bar.yellow { background: #fffbeb; border: 1px solid #fde68a; }
+                .ctrl-bar.blue   { background: #eff6ff; border: 1px solid #bfdbfe; }
+                .ctrl-bar.green  { background: #f0fdf4; border: 1px solid #bbf7d0; }
+
+                .ctrl-bar label {
+                    font-size: 11px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.8px;
+                    white-space: nowrap;
+                }
+
+                .ctrl-bar.yellow label { color: #92400e; }
+                .ctrl-bar.blue   label { color: #1e40af; }
+                .ctrl-bar.green  label { color: #14532d; }
+
+                .ctrl-bar input[type="text"] {
+                    flex: 1;
+                    border: 1.5px solid #e5e7eb;
+                    border-radius: 8px;
+                    padding: 7px 12px;
+                    font-size: 13px;
+                    background: #fff;
+                    font-family: inherit;
+                }
+
+                .ctrl-bar input[type="text"]:focus {
+                    outline: none;
+                    border-color: #2563eb;
+                }
+
+                /* Temperature slider */
+                .temp-row { display: flex; align-items: center; gap: 12px; }
+                .temp-row input[type="range"] { width: 160px; accent-color: #2563eb; }
+                .temp-val {
+                    min-width: 36px; text-align: center; font-size: 14px;
+                    font-weight: 700; color: #2563eb;
+                    background: #dbeafe; border-radius: 6px; padding: 2px 8px;
+                }
+                .temp-hints {
+                    font-size: 11px; color: #9ca3af;
+                    display: flex; justify-content: space-between; width: 160px;
+                }
+
+                /* Typing indicator */
+                #typing-indicator {
+                    display: none;
+                    font-size: 12px;
+                    color: #6b7280;
+                    padding: 4px 20px 0;
+                    font-style: italic;
+                }
+
+                /* ── Panels (Eval pages) ── */
+                .panel { border-radius: 10px !important; box-shadow: 0 2px 12px rgba(0,0,0,0.07) !important; }
+                .panel-primary > .panel-heading { background: linear-gradient(135deg,#1a1a2e,#16213e) !important; border: none !important; border-radius: 10px 10px 0 0 !important; }
+
+                /* Responsive */
+        @@media (max-width: 768px) {
+            .side-nav { display: none; }
+                    .main-content { padding: 16px; }
+                }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="top-navbar">
+        <a href="/Chat/Basic" class="brand">
+            <span class="logo">C</span>
+            <span class="name">CLAUDE API</span>
+            <span class="badge-api">DEMO</span>
+        </a>
+    </nav>
+
+    <div class="app-shell">
+
+        <!-- Side Navigation -->
+        <div class="side-nav">
+            <div class="nav-section">Chat Tasks</div>
+            <a href="/Chat/Basic" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Basic"        ? "active" : "")"><span class="icon">&#8226;</span> Basic Chat</a>
+            <a href="/Chat/SystemPrompt" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "SystemPrompt" ? "active" : "")"><span class="icon">&#8226;</span> System Prompt</a>
+            <a href="/Chat/Temperature" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Temperature"  ? "active" : "")"><span class="icon">&#8226;</span> Temperature</a>
+            <a href="/Chat/Prefill" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Prefill"      ? "active" : "")"><span class="icon">&#8226;</span> Prefill</a>
+            <a href="/Chat/StopSequence" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "StopSequence" ? "active" : "")"><span class="icon">&#8226;</span> Stop Sequence</a>
+            <a href="/Chat/Streaming" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Streaming"    ? "active" : "")"><span class="icon">&#8226;</span> Streaming</a>
+
+            <div class="nav-section">Evaluation</div>
+            <a href="/Eval/Index" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Index"   && ViewContext.RouteData.Values["controller"]?.ToString() == "Eval" ? "active" : "")"><span class="icon">&#8226;</span> Prompt Eval</a>
+            <a href="/Eval/Dataset" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Dataset" ? "active" : "")"><span class="icon">&#8226;</span> Dataset</a>
+
+            <div class="nav-section">Features of Claude</div>
+            <a href="/Features/Index" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Index" && ViewContext.RouteData.Values["controller"]?.ToString() == "Features" ? "active" : "")"><span class="icon">&#8226;</span> Overview</a>
+            <a href="/Features/Thinking" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Thinking" ? "active" : "")"><span class="icon">&#8226;</span> Thinking Mode</a>
+            <a href="/Features/Images" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Images" ? "active" : "")"><span class="icon">&#8226;</span> Image Analysis</a>
+
+            <div class="nav-section">Tools Use</div>
+            <a href="/Tools/Index" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Index" && ViewContext.RouteData.Values["controller"]?.ToString() == "Tools" ? "active" : "")"><span class="icon">&#8226;</span> Overview</a>
+            <a href="/Tools/BasicTools" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "BasicTools" ? "active" : "")"><span class="icon">&#8226;</span> Basic Tools</a>
+            <a href="/Tools/WebSearch" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "WebSearch" ? "active" : "")"><span class="icon">&#8226;</span> Web Search</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

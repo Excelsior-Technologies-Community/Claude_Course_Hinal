@@ -1,0 +1,109 @@
+@{
+    ViewBag.Title = "Task 2 - System Prompt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_ChatNav")
+
+<div class="chat-wrapper">
+    <h2>Task 2 - System Prompt</h2>
+    <p style="text-align:center; color:#888; font-size:13px; margin-bottom:12px;">
+        Tell Claude what role to play before it answers.
+    </p>
+
+    <div class="ctrl-bar yellow">
+        <label>SYSTEM PROMPT</label>
+        <input type="text" id="systemPromptInput"
+               value="You are a Python engineer who writes very concise code"
+               placeholder="e.g. You are a Python engineer who writes very concise code" />
+    </div>
+
+    <div class="chat-box" id="chatBox">
+        <div class="empty-msg" id="emptyMsg">Set a system prompt above, then start chatting</div>
+    </div>
+
+    <div id="typing-indicator" style="display:none; color:#888; font-size:13px; padding:6px 0;">
+        Claude is typing...
+    </div>
+
+    <div class="input-area">
+        <textarea id="userInput" placeholder="Try: Write a Python function that checks a string for duplicate characters."></textarea>
+        <button class="btn-send" id="sendBtn">Send</button>
+    </div>
+
+    <button class="btn-clear" id="clearBtn">Clear conversation</button>
+</div>
+
+<script>
+    var chatHistory = [];
+
+    function appendBubble(role, text) {
+        var emptyMsg = document.getElementById("emptyMsg");
+        if (emptyMsg) emptyMsg.remove();
+
+        var wrap = document.createElement("div");
+        wrap.className = "bubble-wrap " + role;
+
+        var lbl = document.createElement("div");
+        lbl.className = "lbl";
+        lbl.innerText = role === "user" ? "You" : "Claude";
+
+        var msg = document.createElement("div");
+        msg.className = "message " + role;
+        msg.innerText = text;
+
+        wrap.appendChild(lbl);
+        wrap.appendChild(msg);
+        document.getElementById("chatBox").appendChild(wrap);
+        document.getElementById("chatBox").scrollTop = 9999;
+    }
+
+    document.getElementById("sendBtn").addEventListener("click", sendMessage);
+
+    document.getElementById("userInput").addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    function sendMessage() {
+        var input = document.getElementById("userInput").value.trim();
+        var systemPrompt = document.getElementById("systemPromptInput").value.trim();
+        if (!input) return;
+
+        appendBubble("user", input);
+        chatHistory.push({ role: "user", content: input });
+        document.getElementById("userInput").value = "";
+        document.getElementById("typing-indicator").style.display = "block";
+        document.getElementById("sendBtn").disabled = true;
+
+        fetch("/Chat/SendBasic", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ messages: chatHistory, systemPrompt: systemPrompt })
+        })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+            document.getElementById("typing-indicator").style.display = "none";
+            document.getElementById("sendBtn").disabled = false;
+            if (data.success) {
+                appendBubble("assistant", data.text);
+                chatHistory.push({ role: "assistant", content: data.text });
+            } else {
+                appendBubble("assistant", "Error: " + data.error);
+            }
+        })
+        .catch(function () {
+            document.getElementById("typing-indicator").style.display = "none";
+            document.getElementById("sendBtn").disabled = false;
+            appendBubble("assistant", "Request failed.");
+        });
+    }
+
+    document.getElementById("clearBtn").addEventListener("click", function () {
+        chatHistory = [];
+        document.getElementById("chatBox").innerHTML =
+            '<div class="empty-msg" id="emptyMsg">Set a system prompt above, then start chatting</div>';
+    });
+</script>

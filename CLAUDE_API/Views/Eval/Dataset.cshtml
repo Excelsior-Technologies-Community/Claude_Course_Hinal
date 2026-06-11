@@ -1,0 +1,257 @@
+@{
+    ViewBag.Title = "Dataset Manager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Dataset Manager</h2>
+<p style="color:#888; font-size:13px; margin-bottom:16px;">
+    Generate, view, and manage your evaluation dataset.
+</p>
+
+<div class="row">
+    <!-- Left Panel -->
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><b>Generate New Dataset</b></div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label>Number of Tasks</label>
+                    <input id="taskCount" type="number" class="form-control"
+                           value="3" min="1" max="10" />
+                </div>
+                <div class="form-group">
+                    <label>Format Filter</label>
+                    <select id="formatFilter" class="form-control">
+                        <option value="all">All Formats</option>
+                        <option value="json">JSON Only</option>
+                        <option value="python">Python Only</option>
+                        <option value="regex">Regex Only</option>
+                    </select>
+                </div>
+                <button id="btnGenerate" class="btn btn-primary btn-block">
+                    Generate Dataset
+                </button>
+                <hr />
+                <button id="btnClear" class="btn btn-danger btn-block">
+                    Clear Dataset
+                </button>
+            </div>
+        </div>
+
+        <div class="panel panel-default" id="statsPanel" style="display:none;">
+            <div class="panel-heading"><b>Dataset Stats</b></div>
+            <div class="panel-body">
+                <table class="table table-condensed">
+                    <tr><td>Total Tasks</td><td><span id="statTotal" class="badge">0</span></td></tr>
+                    <tr><td>JSON Tasks</td><td><span id="statJson" class="badge" style="background:#5bc0de;">0</span></td></tr>
+                    <tr><td>Python Tasks</td><td><span id="statPython" class="badge" style="background:#5cb85c;">0</span></td></tr>
+                    <tr><td>Regex Tasks</td><td><span id="statRegex" class="badge" style="background:#f0ad4e;">0</span></td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>Current Dataset</b>
+                <span id="taskCountBadge" class="badge pull-right">0 tasks</span>
+            </div>
+            <div class="panel-body">
+                <div id="spinner" style="display:none; text-align:center; padding:20px;">
+                    <p><b>Generating dataset...</b></p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped active" style="width:100%"></div>
+                    </div>
+                </div>
+
+                <div id="emptyState" style="text-align:center; padding:40px; color:#999;">
+                    <p>No dataset yet. Click Generate Dataset to create one.</p>
+                </div>
+
+                <div id="datasetTable" style="display:none;">
+                    <table class="table table-bordered table-hover">
+                        <thead style="background:#f5f5f5;">
+                            <tr>
+                                <th width="5%">#</th>
+                                <th width="40%">Task Description</th>
+                                <th width="30%">Solution Criteria</th>
+                                <th width="12%">Format</th>
+                                <th width="13%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="datasetBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="rawJsonSection" style="display:none; margin-top:10px;">
+                    <button class="btn btn-xs btn-default" id="btnToggleRaw">Show Raw JSON</button>
+                    <pre id="rawJson"
+                         style="display:none; background:#1e1e1e; color:#ccc;
+                                padding:10px; margin-top:8px; font-size:12px;
+                                max-height:200px; overflow-y:auto;"></pre>
+                </div>
+            </div>
+
+            <div class="panel-footer" id="datasetFooter" style="display:none;">
+                <button id="btnRunEval" class="btn btn-success">
+                    Run Evaluation on This Dataset
+                </button>
+                <button id="btnAddTask" class="btn btn-default pull-right">
+                    Add Custom Task
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Custom Task Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Custom Task</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Task Description</label>
+                    <textarea id="newTaskDesc" class="form-control" rows="3"
+                              placeholder="e.g. Write a Python function to list all S3 buckets"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Format</label>
+                    <select id="newTaskFormat" class="form-control">
+                        <option value="python">Python</option>
+                        <option value="json">JSON</option>
+                        <option value="regex">Regex</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnSaveTask">Add Task</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+<script>
+    var dataset = [];
+
+    function formatBadge(fmt) {
+        var colors = { json: 'info', python: 'success', regex: 'warning' };
+        return '<span class="label label-' + (colors[fmt] || 'default') + '">' + fmt.toUpperCase() + '</span>';
+    }
+
+    function updateStats() {
+        document.getElementById('statTotal').textContent = dataset.length;
+        document.getElementById('statJson').textContent = dataset.filter(function (d) { return d.Format === 'json'; }).length;
+        document.getElementById('statPython').textContent = dataset.filter(function (d) { return d.Format === 'python'; }).length;
+        document.getElementById('statRegex').textContent = dataset.filter(function (d) { return d.Format === 'regex'; }).length;
+        document.getElementById('taskCountBadge').textContent = dataset.length + ' tasks';
+    }
+
+    function renderTable(data) {
+        var filter = document.getElementById('formatFilter').value;
+        var filtered = filter === 'all' ? data : data.filter(function (d) { return d.Format === filter; });
+
+        var html = '';
+        filtered.forEach(function (item, i) {
+            html += '<tr>' +
+                '<td>' + (i + 1) + '</td>' +
+                '<td>' + item.Task + '</td>' +
+                '<td><small style="color:#777;">' + (item.SolutionCriteria || '-') + '</small></td>' +
+                '<td>' + formatBadge(item.Format) + '</td>' +
+                '<td><button class="btn btn-xs btn-danger" onclick="removeTask(' + i + ')">Remove</button></td>' +
+                '</tr>';
+        });
+
+        document.getElementById('datasetBody').innerHTML = html;
+        document.getElementById('rawJson').textContent = JSON.stringify(data, null, 2);
+
+        var hasData = data.length > 0;
+        document.getElementById('emptyState').style.display = hasData ? 'none' : 'block';
+        document.getElementById('datasetTable').style.display = hasData ? 'block' : 'none';
+        document.getElementById('rawJsonSection').style.display = hasData ? 'block' : 'none';
+        document.getElementById('datasetFooter').style.display = hasData ? 'block' : 'none';
+        document.getElementById('statsPanel').style.display = hasData ? 'block' : 'none';
+        updateStats();
+    }
+
+    function removeTask(index) {
+        dataset.splice(index, 1);
+        renderTable(dataset);
+    }
+
+    document.getElementById('btnGenerate').addEventListener('click', function () {
+        var count = parseInt(document.getElementById('taskCount').value);
+        document.getElementById('spinner').style.display = 'block';
+        document.getElementById('emptyState').style.display = 'none';
+        document.getElementById('datasetTable').style.display = 'none';
+        document.getElementById('btnGenerate').disabled = true;
+
+        fetch('/Eval/GenerateDataset', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ taskDescription: '', promptInputsSpec: {}, numCases: count })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('btnGenerate').disabled = false;
+            if (!res.success) { alert('Error: ' + res.error); return; }
+
+            // Map server response to local format
+            dataset = res.data.map(function (tc) {
+                return {
+                    Task: tc.TaskDescription,
+                    Format: 'json',
+                    SolutionCriteria: (tc.SolutionCriteria || []).join(', ')
+                };
+            });
+            renderTable(dataset);
+        })
+        .catch(function () {
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('btnGenerate').disabled = false;
+            alert('Request failed.');
+        });
+    });
+
+    document.getElementById('btnClear').addEventListener('click', function () {
+        if (dataset.length === 0) return;
+        if (confirm('Clear all tasks?')) { dataset = []; renderTable(dataset); }
+    });
+
+    document.getElementById('formatFilter').addEventListener('change', function () { renderTable(dataset); });
+
+    document.getElementById('btnToggleRaw').addEventListener('click', function () {
+        var raw = document.getElementById('rawJson');
+        var visible = raw.style.display !== 'none';
+        raw.style.display = visible ? 'none' : 'block';
+        this.textContent = visible ? 'Show Raw JSON' : 'Hide Raw JSON';
+    });
+
+    document.getElementById('btnAddTask').addEventListener('click', function () {
+        $('#addTaskModal').modal('show');
+    });
+
+    document.getElementById('btnSaveTask').addEventListener('click', function () {
+        var desc = document.getElementById('newTaskDesc').value.trim();
+        if (!desc) { alert('Please enter a task description.'); return; }
+        dataset.push({ Task: desc, Format: document.getElementById('newTaskFormat').value });
+        renderTable(dataset);
+        $('#addTaskModal').modal('hide');
+        document.getElementById('newTaskDesc').value = '';
+    });
+
+    document.getElementById('btnRunEval').addEventListener('click', function () {
+        if (dataset.length === 0) return;
+        sessionStorage.setItem('evalDataset', JSON.stringify(dataset));
+        window.location.href = '/Eval/Index';
+    });
+</script>
+}

@@ -1,0 +1,30 @@
+@{
+    ViewBag.Title = "Thinking Mode";
+}
+
+<h2>Thinking Mode Mock</h2>
+<div>
+    <label>Input:</label>
+    <input type="text" id="inputTxt" class="form-control" value="Explain quantum computing" />
+    <button id="sendBtn" class="btn btn-primary mt-2">Send</button>
+</div>
+<div class="mt-4">
+    <pre id="output" style="white-space: pre-wrap; font-family: monospace; background: #f4f4f4; padding: 10px; border-radius: 5px;"></pre>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#sendBtn').click(function () {
+                var input = $('#inputTxt').val();
+                $.post('@Url.Action("SendThinking", "Features")', { input: input }, function (res) {
+                    if (res.success) {
+                        $('#output').text(res.text);
+                    } else {
+                        $('#output').text("Error: " + res.error);
+                    }
+                });
+            });
+        });
+    </script>
+}

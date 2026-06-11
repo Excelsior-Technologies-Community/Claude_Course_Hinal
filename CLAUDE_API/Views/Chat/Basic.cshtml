@@ -1,0 +1,108 @@
+@{
+    ViewBag.Title = "Task 1 - Multi-turn Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_ChatNav")
+
+<div class="chat-wrapper">
+    <h2>Task 1 - Multi-turn Chat</h2>
+    <p style="text-align:center; color:#888; font-size:13px; margin-bottom:12px;">
+        Conversation history is kept. Claude remembers what you said earlier.
+    </p>
+
+    <div class="chat-box" id="chatBox">
+        <div class="empty-msg" id="emptyMsg">Start the conversation below</div>
+    </div>
+
+    <div id="typing-indicator" style="display:none; color:#888; font-size:13px; padding:6px 0;">
+        Claude is typing...
+    </div>
+
+    <div class="input-area">
+        <textarea id="userInput" placeholder="Type your message... (Enter to send)"></textarea>
+        <button type="button" class="btn-send" id="sendBtn" onclick="executeStaticChat()">Send</button>
+    </div>
+
+    <button class="btn-clear" id="clearBtn">Clear conversation</button>
+</div>
+
+<script>
+    var chatHistory = [];
+
+    // Make sure hitting 'Enter' keys triggers the chat safely
+    document.getElementById('userInput').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            executeStaticChat();
+        }
+    });
+
+    function appendBubble(role, text) {
+        var emptyMsg = document.getElementById("emptyMsg");
+        if (emptyMsg) emptyMsg.remove();
+
+        var wrap = document.createElement("div");
+        wrap.className = "bubble-wrap " + role;
+
+        var lbl = document.createElement("div");
+        lbl.className = "lbl";
+        lbl.innerText = role === "user" ? "You" : "Claude";
+
+        var msg = document.createElement("div");
+        msg.className = "message " + role;
+        msg.innerText = text;
+
+        wrap.appendChild(lbl);
+        wrap.appendChild(msg);
+        document.getElementById("chatBox").appendChild(wrap);
+
+        var box = document.getElementById('chatBox');
+        if (box) box.scrollTop = box.scrollHeight;
+    }
+
+    function executeStaticChat() {
+        var inputEl = document.getElementById("userInput");
+        var input = inputEl.value.trim();
+        if (!input) return;
+
+        // 1. Instantly append User bubble
+        appendBubble("user", input);
+        chatHistory.push({ role: "user", content: input });
+        inputEl.value = "";
+
+        // 2. Turn on typing indicator
+        document.getElementById("typing-indicator").style.display = "block";
+        document.getElementById("sendBtn").disabled = true;
+
+        // 3. Post to backend
+        fetch("/Chat/SendBasic", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ messages: chatHistory })
+        })
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                document.getElementById("typing-indicator").style.display = "none";
+                document.getElementById("sendBtn").disabled = false;
+
+                if (data.success) {
+                    appendBubble("assistant", data.text);
+                    chatHistory.push({ role: "assistant", content: data.text });
+                } else {
+                    appendBubble("assistant", "Error: " + data.error);
+                }
+            })
+            .catch(function (err) {
+                document.getElementById("typing-indicator").style.display = "none";
+                document.getElementById("sendBtn").disabled = false;
+                appendBubble("assistant", "Static response simulation failed.");
+            });
+    }
+
+    document.getElementById("clearBtn").addEventListener("click", function () {
+        chatHistory = [];
+        document.getElementById("chatBox").innerHTML =
+            '<div class="empty-msg" id="emptyMsg">Start the conversation below</div>';
+    });
+</script>

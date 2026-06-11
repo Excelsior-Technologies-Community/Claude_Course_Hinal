@@ -1,0 +1,250 @@
+@{
+    ViewBag.Title = "Prompt Evaluator";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Prompt Evaluator</h2>
+<p style="color:#888; font-size:13px; margin-bottom:16px;">
+    Define a task, generate test cases, and evaluate prompt quality.
+</p>
+
+<!-- Step 1 -->
+<div class="panel panel-primary">
+    <div class="panel-heading"><b>Step 1 - Define Your Task</b></div>
+    <div class="panel-body">
+        <div class="form-group">
+            <label>Task Description - What should the prompt accomplish?</label>
+            <textarea id="taskDescription" class="form-control" rows="3"
+                      placeholder="e.g. Extract topics out of a passage of text into a JSON array of strings"></textarea>
+        </div>
+        <label>Prompt Input Fields - What inputs does your prompt require?</label>
+        <div id="inputSpecContainer"></div>
+        <button class="btn btn-default btn-sm" id="btnAddInput">Add Input Field</button>
+    </div>
+</div>
+
+<!-- Step 2 -->
+<div class="panel panel-default">
+    <div class="panel-heading"><b>Step 2 - Generate Test Dataset</b></div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-3">
+                <label>Number of Test Cases</label>
+                <input id="numCases" type="number" class="form-control" value="3" min="1" max="10" />
+            </div>
+            <div class="col-md-9" style="padding-top:25px;">
+                <button id="btnGenerate" class="btn btn-primary">Generate Dataset</button>
+            </div>
+        </div>
+        <div id="generateSpinner" style="display:none; margin-top:10px;">
+            <div class="progress"><div class="progress-bar progress-bar-striped active" style="width:100%"></div></div>
+            <p>Generating test cases...</p>
+        </div>
+        <div id="datasetPreview" style="display:none; margin-top:15px;">
+            <h4>Generated Dataset <span id="datasetCount" class="badge"></span></h4>
+            <div id="datasetCards"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Step 3 -->
+<div class="panel panel-default" id="promptPanel" style="display:none;">
+    <div class="panel-heading"><b>Step 3 - Define Your Prompt Template</b></div>
+    <div class="panel-body">
+        <p style="color:#888; font-size:13px;">
+            Use {input_key} placeholders. They will be replaced with actual test case values.
+        </p>
+        <textarea id="promptTemplate" class="form-control" rows="6"
+                  placeholder="e.g. What topics are in here?&#10;&#10;{content}"></textarea>
+        <div class="form-group" style="margin-top:15px;">
+            <label>Extra Criteria (optional - automatic fail if violated)</label>
+            <textarea id="extraCriteria" class="form-control" rows="3"
+                      placeholder="e.g. Contains a JSON array of strings&#10;Response should contain the JSON array and nothing else"></textarea>
+        </div>
+        <button id="btnRunEval" class="btn btn-success btn-lg" style="margin-top:10px;">
+            Run Evaluation
+        </button>
+    </div>
+</div>
+
+<!-- Step 4: Results -->
+<div id="resultsSection" style="display:none;">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <b>Evaluation Results</b>
+            &nbsp;
+            <span class="label label-warning" id="avgScoreBadge" style="font-size:14px;"></span>
+            &nbsp;
+            <span class="label label-info" id="passRateBadge" style="font-size:14px;"></span>
+        </div>
+        <div class="panel-body">
+            <div id="resultsTable"></div>
+        </div>
+    </div>
+</div>
+
+<div id="evalSpinner" style="display:none; text-align:center; padding:30px;">
+    <div class="progress"><div class="progress-bar progress-bar-striped active" style="width:100%"></div></div>
+    <p><b>Running evaluation... please wait</b></p>
+</div>
+
+@section scripts {
+<script>
+    var currentDataset = [];
+    var inputFieldCount = 0;
+
+    function addInputField(key, desc) {
+        inputFieldCount++;
+        var id = 'inputField_' + inputFieldCount;
+        var html = '<div class="row" id="' + id + '" style="margin-bottom:8px;">' +
+            '<div class="col-md-4"><input class="form-control input-key" placeholder="Field name (e.g. content)" value="' + (key || '') + '"/></div>' +
+            '<div class="col-md-7"><input class="form-control input-desc" placeholder="Description (e.g. One paragraph of text)" value="' + (desc || '') + '"/></div>' +
+            '<div class="col-md-1"><button class="btn btn-danger btn-sm" onclick="document.getElementById(\'' + id + '\').remove()">X</button></div>' +
+            '</div>';
+        document.getElementById('inputSpecContainer').insertAdjacentHTML('beforeend', html);
+    }
+
+    document.getElementById('btnAddInput').addEventListener('click', function () { addInputField('', ''); });
+    addInputField('content', 'The main text content to process');
+
+    function getPromptInputsSpec() {
+        var spec = {};
+        document.querySelectorAll('#inputSpecContainer .row').forEach(function (row) {
+            var key = row.querySelector('.input-key').value.trim();
+            var desc = row.querySelector('.input-desc').value.trim();
+            if (key) spec[key] = desc;
+        });
+        return spec;
+    }
+
+    document.getElementById('btnGenerate').addEventListener('click', function () {
+        var taskDesc = document.getElementById('taskDescription').value.trim();
+        if (!taskDesc) { alert('Please enter a task description.'); return; }
+
+        document.getElementById('generateSpinner').style.display = 'block';
+        document.getElementById('datasetPreview').style.display = 'none';
+        document.getElementById('promptPanel').style.display = 'none';
+        document.getElementById('btnGenerate').disabled = true;
+
+        fetch('/Eval/GenerateDataset', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                TaskDescription: taskDesc,
+                PromptInputsSpec: getPromptInputsSpec(),
+                NumCases: parseInt(document.getElementById('numCases').value)
+            })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+            document.getElementById('generateSpinner').style.display = 'none';
+            document.getElementById('btnGenerate').disabled = false;
+            if (!res.success) { alert('Error: ' + res.error); return; }
+
+            currentDataset = res.data;
+            renderDatasetCards(currentDataset);
+            document.getElementById('datasetPreview').style.display = 'block';
+            document.getElementById('promptPanel').style.display = 'block';
+            document.getElementById('datasetCount').textContent = currentDataset.length + ' cases';
+        })
+        .catch(function () {
+            document.getElementById('generateSpinner').style.display = 'none';
+            document.getElementById('btnGenerate').disabled = false;
+            alert('Request failed.');
+        });
+    });
+
+    function renderDatasetCards(dataset) {
+        var html = '';
+        dataset.forEach(function (tc, i) {
+            var inputsHtml = Object.entries(tc.PromptInputs || {}).map(function (kv) {
+                return '<b>' + kv[0] + ':</b> ' + kv[1].substring(0, 120) + (kv[1].length > 120 ? '...' : '');
+            }).join('<br>');
+
+            var criteriaHtml = (tc.SolutionCriteria || []).map(function (c) { return '- ' + c; }).join('<br>');
+
+            html += '<div class="panel panel-default">' +
+                '<div class="panel-heading"><b>Case ' + (i + 1) + ':</b> ' + tc.Scenario + '</div>' +
+                '<div class="panel-body"><div class="row">' +
+                '<div class="col-md-8"><small style="color:#888;">Inputs</small><br>' + inputsHtml + '</div>' +
+                '<div class="col-md-4"><small style="color:#888;">Criteria</small><br><small>' + criteriaHtml + '</small></div>' +
+                '</div></div></div>';
+        });
+        document.getElementById('datasetCards').innerHTML = html;
+    }
+
+    document.getElementById('btnRunEval').addEventListener('click', function () {
+        if (currentDataset.length === 0) { alert('Generate a dataset first.'); return; }
+        var template = document.getElementById('promptTemplate').value.trim();
+        if (!template) { alert('Please enter a prompt template.'); return; }
+
+        document.getElementById('evalSpinner').style.display = 'block';
+        document.getElementById('resultsSection').style.display = 'none';
+        document.getElementById('btnRunEval').disabled = true;
+
+        fetch('/Eval/RunEvaluation', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                Dataset: currentDataset,
+                PromptTemplate: template,
+                ExtraCriteria: document.getElementById('extraCriteria').value.trim()
+            })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+            document.getElementById('evalSpinner').style.display = 'none';
+            document.getElementById('btnRunEval').disabled = false;
+            if (!res.success) { alert('Error: ' + res.error); return; }
+            renderResults(res.data);
+            document.getElementById('resultsSection').style.display = 'block';
+        })
+        .catch(function () {
+            document.getElementById('evalSpinner').style.display = 'none';
+            document.getElementById('btnRunEval').disabled = false;
+            alert('Request failed.');
+        });
+    });
+
+    function renderResults(summary) {
+        var results = summary.Results;
+        var avg = summary.AverageScore;
+        var passCount = results.filter(function (r) { return r.Score >= 7; }).length;
+        var passRate = results.length > 0 ? (passCount / results.length * 100).toFixed(1) : 0;
+
+        document.getElementById('avgScoreBadge').textContent = 'Avg Score: ' + avg.toFixed(1) + '/10';
+        document.getElementById('passRateBadge').textContent = 'Pass Rate: ' + passRate + '%';
+
+        var html = '<table class="table table-bordered" style="font-size:13px;">' +
+            '<thead style="background:#4a4a4a; color:white;">' +
+            '<tr><th>Scenario</th><th>Prompt Inputs</th><th>Criteria</th><th>Output</th><th>Score</th><th>Reasoning</th></tr>' +
+            '</thead><tbody>';
+
+        results.forEach(function (r) {
+            var cls = r.Score >= 8 ? 'success' : r.Score >= 6 ? 'warning' : 'danger';
+
+            var inputsHtml = Object.entries(r.TestCase.PromptInputs || {}).map(function (kv) {
+                return '<b>' + kv[0] + ':</b> ' + kv[1].substring(0, 80) + (kv[1].length > 80 ? '...' : '');
+            }).join('<br>');
+
+            var criteriaHtml = (r.TestCase.SolutionCriteria || []).map(function (c) { return '- ' + c; }).join('<br>');
+
+            var swHtml = '';
+            (r.Strengths || []).forEach(function (s) { swHtml += '<span style="color:green;">+ ' + s + '</span><br>'; });
+            (r.Weaknesses || []).forEach(function (w) { swHtml += '<span style="color:red;">- ' + w + '</span><br>'; });
+
+            html += '<tr>' +
+                '<td>' + r.TestCase.Scenario + '</td>' +
+                '<td><small>' + inputsHtml + '</small></td>' +
+                '<td><small>' + criteriaHtml + '</small></td>' +
+                '<td><pre style="background:#f5f5f5; font-size:11px; max-height:120px; overflow-y:auto; padding:6px;">' + r.Output + '</pre></td>' +
+                '<td><span class="label label-' + cls + '" style="font-size:14px;">' + r.Score + '</span><br><br><small>' + swHtml + '</small></td>' +
+                '<td><small>' + r.Reasoning + '</small></td>' +
+                '</tr>';
+        });
+
+        html += '</tbody></table>';
+        document.getElementById('resultsTable').innerHTML = html;
+    }
+</script>
+}

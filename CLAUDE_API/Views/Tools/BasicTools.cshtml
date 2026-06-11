@@ -1,0 +1,30 @@
+@{
+    ViewBag.Title = "Basic Tools";
+}
+
+<h2>Basic Tools Mock</h2>
+<div>
+    <label>Location for Weather Tool:</label>
+    <input type="text" id="locationTxt" class="form-control" value="San Francisco, CA" />
+    <button id="sendBtn" class="btn btn-primary mt-2">Simulate Weather Tool</button>
+</div>
+<div class="mt-4">
+    <pre id="output" style="white-space: pre-wrap; font-family: monospace; background: #f4f4f4; padding: 10px; border-radius: 5px;"></pre>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#sendBtn').click(function () {
+                var location = $('#locationTxt').val();
+                $.post('@Url.Action("SendBasicTool", "Tools")', { location: location }, function (res) {
+                    if (res.success) {
+                        $('#output').text(res.text);
+                    } else {
+                        $('#output').text("Error: " + res.error);
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,90 @@
+@{
+    ViewBag.Title = "Task 4 - Prefill";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_ChatNav")
+
+<div class="chat-wrapper">
+    <h2>Task 4 - Message Prefilling</h2>
+    <p style="text-align:center; color:#888; font-size:13px; margin-bottom:12px;">
+        Seed the assistant reply. For example, starting with ```json forces JSON output.
+    </p>
+
+    <div class="ctrl-bar yellow">
+        <label>YOUR PROMPT</label>
+        <textarea id="userPrompt" rows="3"
+                  placeholder="e.g. Generate a very short event bridge rule as json">Generate a very short event bridge rule as json</textarea>
+    </div>
+
+    <div class="ctrl-bar yellow">
+        <label>PREFILL (assistant start)</label>
+        <input type="text" id="prefillText" value="```json"
+               placeholder="e.g. ```json" />
+    </div>
+
+    <div class="ctrl-bar yellow">
+        <label>STOP SEQUENCES (comma separated)</label>
+        <input type="text" id="stopSeqs" value="```"
+               placeholder="e.g. ```" />
+    </div>
+
+    <div style="margin: 10px 0;">
+        <button class="btn-send" id="sendBtn">Send</button>
+    </div>
+
+    <div id="typing-indicator" style="display:none; color:#888; font-size:13px; padding:6px 0;">
+        Claude is typing...
+    </div>
+
+    <pre id="output"
+         style="min-height:120px; background:#1e1e1e; color:#d4d4d4;
+                padding:14px; border-radius:6px; white-space:pre-wrap;
+                font-size:13px; margin-top:10px;"></pre>
+
+    <button class="btn-clear" id="clearBtn">Clear output</button>
+</div>
+
+<script>
+    document.getElementById("sendBtn").addEventListener("click", sendMessage);
+
+    function sendMessage() {
+        var prompt = document.getElementById("userPrompt").value.trim();
+        if (!prompt) return;
+
+        var output = document.getElementById("output");
+        output.textContent = "";
+        document.getElementById("typing-indicator").style.display = "block";
+        document.getElementById("sendBtn").disabled = true;
+
+        var stopRaw = document.getElementById("stopSeqs").value.trim();
+        var stops = stopRaw ? stopRaw.split(",").map(function (s) { return s.trim(); }) : [];
+
+        fetch("/Chat/SendPrefill", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                messages: [{ role: "user", content: prompt }],
+                prefill: document.getElementById("prefillText").value,
+                stopSequences: stops,
+                temperature: 1.0
+            })
+        })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+            document.getElementById("typing-indicator").style.display = "none";
+            document.getElementById("sendBtn").disabled = false;
+            output.textContent = data.success ? data.text : "Error: " + data.error;
+        })
+        .catch(function () {
+            document.getElementById("typing-indicator").style.display = "none";
+            document.getElementById("sendBtn").disabled = false;
+            output.textContent = "Request failed.";
+        });
+    }
+
+    document.getElementById("clearBtn").addEventListener("click", function () {
+        document.getElementById("output").textContent = "";
+        document.getElementById("userPrompt").value = "";
+    });
+</script>

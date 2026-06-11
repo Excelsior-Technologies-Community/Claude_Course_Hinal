@@ -1,0 +1,30 @@
+@{
+    ViewBag.Title = "Web Search Tool";
+}
+
+<h2>Web Search Tool Mock</h2>
+<div>
+    <label>Search Query:</label>
+    <input type="text" id="queryTxt" class="form-control" value="Anthropic Claude latest features" />
+    <button id="sendBtn" class="btn btn-primary mt-2">Simulate Web Search</button>
+</div>
+<div class="mt-4">
+    <pre id="output" style="white-space: pre-wrap; font-family: monospace; background: #f4f4f4; padding: 10px; border-radius: 5px;"></pre>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#sendBtn').click(function () {
+                var query = $('#queryTxt').val();
+                $.post('@Url.Action("SendWebSearch", "Tools")', { query: query }, function (res) {
+                    if (res.success) {
+                        $('#output').text(res.text);
+                    } else {
+                        $('#output').text("Error: " + res.error);
+                    }
+                });
+            });
+        });
+    </script>
+}
